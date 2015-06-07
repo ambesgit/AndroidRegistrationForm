@@ -1,0 +1,91 @@
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.AttributedCharacterIterator;
+import java.util.jar.Attributes;
+
+
+public class MainActivity extends Activity {
+    private static int check=0;
+    private static RelativeLayout.LayoutParams original;
+    private static RelativeLayout.LayoutParams linear_1p;
+    private static RelativeLayout.LayoutParams containerLeft;
+    private static RelativeLayout.LayoutParams containerReght;
+
+public static final String EXTRA_MESSAGE="com.example.ambes.myapplication";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Intent intent = new Intent(this,)
+    //the view class/object is added to the display container
+        setContentView(R.layout.grid);
+        //get the Imageview to muniplate its attributes
+        ImageView img=(ImageView) findViewById(R.id.image);
+        LinearLayout linear_1=(LinearLayout) findViewById(R.id.linear_1);
+        GridLayout igrid=(GridLayout) findViewById(R.id.igrid2);
+        //get the originial layout parameters(width and height)
+        original=(RelativeLayout.LayoutParams)img.getLayoutParams();
+        linear_1p=(RelativeLayout.LayoutParams)linear_1.getLayoutParams();
+
+
+        //attach onclicklistener to the imageview so as to change its layout dimenssions --->expression encapsulates the
+        //anonymous class(new ONCLickLIstener(){public void onClick(View v){}
+        img.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout ln=(LinearLayout)findViewById(R.id.linear_1);
+                GridLayout con2grid=(GridLayout)findViewById(R.id.con2);
+                GridLayout con3grid=(GridLayout)findViewById(R.id.container3);
+                containerLeft=(RelativeLayout.LayoutParams)con2grid.getLayoutParams();
+                containerLeft.addRule(RelativeLayout.BELOW,R.id.image);
+                containerReght=(RelativeLayout.LayoutParams)con3grid.getLayoutParams();
+                containerReght.addRule(RelativeLayout.BELOW,R.id.image);
+                containerReght.addRule(RelativeLayout.RIGHT_OF,R.id.con2);
+               ;
+                if(check==0) {
+                    RelativeLayout.LayoutParams pln= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    pln.addRule(RelativeLayout.BELOW,R.id.image);
+                    pln.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                    RelativeLayout.LayoutParams wh=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams con3p= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    con3p.addRule(RelativeLayout.BELOW,R.id.linear_1);
+                    con3p.addRule(RelativeLayout.RIGHT_OF,R.id.con2);
+                    RelativeLayout.LayoutParams con2p= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    con2p.addRule(RelativeLayout.BELOW,R.id.linear_1);
+                    con2grid.setLayoutParams(con2p);
+                    con3grid.setLayoutParams(con3p);
+                    v.setLayoutParams(wh);
+                    ln.setLayoutParams(pln);
+                    ln.setOrientation(LinearLayout.HORIZONTAL);
+                    MainActivity.check=1;
+                }
+                else{
+                    //this is for the imageview to reset the paramteres
+                    con2grid.setLayoutParams(containerLeft);
+                    con3grid.setLayoutParams(containerReght);
+                    v.setLayoutParams(MainActivity.original);
+                    ln.setLayoutParams(linear_1p);
+                    ln.setOrientation(LinearLayout.VERTICAL);
+                    MainActivity.check=0;
+                }
+                Toast.makeText(getApplicationContext(),"this is test",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
